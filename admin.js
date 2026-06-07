@@ -11,11 +11,11 @@ var DEFAULT_ADMIN_PRODUCTS = {
         { id: 'p2', name: 'Classic Silver Series Watch', brand: 'DANIEL WELLINGTON', price: 2850000, img: 'men_watch_product_1780400562688.png', cat: 'aksesoris' },
         { id: 'p3', name: 'Premium White Linen Shirt', brand: 'MANGO MAN', price: 699000, img: 'men_shirt_product_1780400575906.png', cat: 'apparel' },
         { id: 'p4', name: 'Court Classic Sneakers', brand: 'ADIDAS ORIGINALS', price: 1299000, img: 'men_sneakers_product_1780400547442.png', cat: 'sneakers' },
-        { id: 'p5', name: 'Essential Black Bomber Jacket', brand: 'H&M', price: 799000, img: 'https://via.placeholder.com/520x680/333333/ffffff?text=Bomber+Jacket', cat: 'apparel' },
-        { id: 'p6', name: 'Tailored Navy Chino Pants', brand: 'UNIQLO', price: 549000, img: 'https://via.placeholder.com/520x680/0a3d62/ffffff?text=Chino+Pants', cat: 'apparel' },
-        { id: 'p7', name: 'Soft Cotton Polo Shirt', brand: 'ZARA MAN', price: 399000, img: 'https://via.placeholder.com/520x680/1d3557/ffffff?text=Polo+Shirt', cat: 'apparel' },
-        { id: 'p8', name: 'Vintage Indigo Denim Overshirt', brand: 'LEVI’S', price: 999000, img: 'https://via.placeholder.com/520x680/4a6fa5/ffffff?text=Denim+Overshirt', cat: 'apparel' },
-        { id: 'p9', name: 'Stretch Performance Jogger Pants', brand: 'NIKE', price: 649000, img: 'https://via.placeholder.com/520x680/2a9d8f/ffffff?text=Jogger+Pants', cat: 'apparel' }
+        { id: 'p5', name: 'Essential Black Bomber Jacket', brand: 'H&M', price: 799000, img: 'https://via.placeholder.com/520x680/000000/ffffff?text=Bomber+Jacket', cat: 'apparel' },
+        { id: 'p6', name: 'Tailored Navy Chino Pants', brand: 'UNIQLO', price: 549000, img: 'https://via.placeholder.com/520x680/1f3b4d/ffffff?text=Chino+Pants', cat: 'apparel' },
+        { id: 'p7', name: 'Soft Cotton Polo Shirt', brand: 'ZARA MAN', price: 399000, img: 'https://via.placeholder.com/520x680/2c3e50/ffffff?text=Polo+Shirt', cat: 'apparel' },
+        { id: 'p8', name: 'Vintage Indigo Denim Overshirt', brand: 'LEVI’S', price: 999000, img: 'https://via.placeholder.com/520x680/3a6ea5/ffffff?text=Denim+Overshirt', cat: 'apparel' },
+        { id: 'p9', name: 'Stretch Performance Jogger Pants', brand: 'NIKE', price: 649000, img: 'https://via.placeholder.com/520x680/16a085/ffffff?text=Jogger+Pants', cat: 'apparel' }
     ],
     wanita: [
         { id: 'w1', name: 'Floral Midi Dress', brand: 'ZARA', price: 899000, img: 'men_shirt_product_1780400575906.png', cat: 'apparel' },
