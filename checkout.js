@@ -7,6 +7,37 @@
 let cart = JSON.parse(localStorage.getItem('cart')) || [];
 let discount = 0;
 let currentStep = 1;
+const ORDER_HISTORY_KEY = 'orderHistory';
+
+function loadOrderHistory() {
+    const raw = localStorage.getItem(ORDER_HISTORY_KEY);
+    return raw ? JSON.parse(raw) : [];
+}
+
+function saveOrderHistory(history) {
+    localStorage.setItem(ORDER_HISTORY_KEY, JSON.stringify(history));
+}
+
+function addOrderToHistory(order) {
+    const history = loadOrderHistory();
+    history.unshift(order);
+    saveOrderHistory(history);
+}
+
+function getStatusStages() {
+    return [
+        { status: 'Pesanan diterima', location: 'Gudang LUXE.M' },
+        { status: 'Diproses', location: 'Pusat Pemenuhan' },
+        { status: 'Dikemas', location: 'Area Pengemasan' },
+        { status: 'Dikirim', location: 'Perjalanan menuju alamat' },
+        { status: 'Tiba di tujuan', location: 'Lokasi tujuan' }
+    ];
+}
+
+function formatDateTime(value) {
+    const date = new Date(value);
+    return date.toLocaleString('id-ID', { day: '2-digit', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit' });
+}
 
 // Valid promo codes
 const VOUCHERS = {
@@ -226,12 +257,49 @@ function placeOrder() {
     setTimeout(() => {
         // Generate order ID
         const orderId = 'LXM-' + Date.now().toString().slice(-8).toUpperCase();
+        const shippingCost = getShippingCost();
+        const subtotal = cart.reduce((sum, item) => sum + item.price * item.quantity, 0);
+        const total = subtotal + shippingCost - discount;
 
-        // Clear cart
+        const order = {
+            id: orderId,
+            createdAt: new Date().toISOString(),
+            customer: {
+                firstName: document.getElementById('first-name').value,
+                lastName: document.getElementById('last-name').value,
+                email: document.getElementById('email').value,
+                phone: document.getElementById('phone').value,
+                address: document.getElementById('address').value,
+                city: document.getElementById('city').value,
+                province: document.getElementById('province').value,
+                postal: document.getElementById('postal').value
+            },
+            shippingMethod: document.querySelector('input[name="shipping"]:checked').closest('label').querySelector('strong').textContent,
+            paymentMethod: document.querySelector('input[name="payment"]:checked').closest('label').querySelector('span').textContent,
+            items: cart.map(item => ({ id: item.id, name: item.name, brand: item.brand, price: item.price, quantity: item.quantity })),
+            subtotal: subtotal,
+            shippingCost: shippingCost,
+            discount: discount,
+            total: total,
+            statusIndex: 0,
+            statusTimeline: getStatusStages(),
+            history: [{
+                status: 'Pesanan diterima',
+                location: 'Gudang LUXE.M',
+                time: new Date().toISOString()
+            }],
+            lastUpdated: new Date().toISOString()
+        };
+
+        addOrderToHistory(order);
         localStorage.removeItem('cart');
+        localStorage.setItem('latestOrderId', orderId);
 
-        // Show success
         document.getElementById('order-id-display').textContent = `No. Pesanan: ${orderId}`;
+        const trackLink = document.getElementById('track-order-link');
+        if (trackLink) {
+            trackLink.href = `status.html?id=${orderId}`;
+        }
         document.getElementById('success-modal').classList.add('active');
 
         btn.disabled = false;

@@ -4,6 +4,7 @@
  */
 
 var ADMIN_STORAGE_KEY = 'adminProducts';
+var ORDER_HISTORY_KEY = 'orderHistory';
 
 var DEFAULT_ADMIN_PRODUCTS = {
     pria: [
@@ -61,10 +62,51 @@ function getFlattenedProducts() {
     return items;
 }
 
+function loadOrderHistory() {
+    var raw = localStorage.getItem(ORDER_HISTORY_KEY);
+    if (!raw) return [];
+    try {
+        return JSON.parse(raw);
+    } catch (e) {
+        return [];
+    }
+}
+
+function saveOrderHistory(history) {
+    localStorage.setItem(ORDER_HISTORY_KEY, JSON.stringify(history));
+}
+
+function getOrderStatus(order) {
+    return order.statusTimeline[order.statusIndex] ? order.statusTimeline[order.statusIndex].status : 'Selesai';
+}
+
+function updateOrderProgress() {
+    var orders = loadOrderHistory();
+    var now = Date.now();
+    var changed = false;
+
+    orders.forEach(function(order) {
+        if (order.statusIndex >= order.statusTimeline.length - 1) return;
+        var lastUpdated = new Date(order.lastUpdated).getTime();
+        if (now - lastUpdated >= 20000) {
+            order.statusIndex += 1;
+            var nextStage = order.statusTimeline[order.statusIndex];
+            order.history.push({ status: nextStage.status, location: nextStage.location, time: new Date().toISOString() });
+            order.lastUpdated = new Date().toISOString();
+            changed = true;
+        }
+    });
+
+    if (changed) saveOrderHistory(orders);
+    return orders;
+}
+
 function renderAdminStats() {
     var products = getFlattenedProducts();
+    var orders = loadOrderHistory();
     el('admin-total-products').textContent = products.length;
     el('admin-total-categories').textContent = Object.keys(adminProducts).length;
+    el('admin-total-orders').textContent = orders.length;
 }
 
 function renderAdminTable() {
@@ -108,6 +150,38 @@ function deleteAdminProduct(id, category) {
     showToast('Produk dengan ID ' + id + ' telah dihapus.', 'success');
 }
 
+function renderAdminOrderTable() {
+    var query = el('admin-order-search').value.trim().toLowerCase();
+    var orders = updateOrderProgress();
+    var rows = '';
+
+    if (orders.length === 0) {
+        el('admin-order-table').innerHTML = '<tr><td colspan="7" style="text-align:center;padding:2rem;color:#888;">Belum ada pesanan.</td></tr>';
+        return;
+    }
+
+    orders.forEach(function(order) {
+        var customerName = (order.customer.firstName + ' ' + order.customer.lastName).toLowerCase();
+        if (query && order.id.toLowerCase().indexOf(query) === -1 && customerName.indexOf(query) === -1) return;
+
+        rows += '<tr>'
+            + '<td>' + order.id + '</td>'
+            + '<td>' + order.customer.firstName + ' ' + order.customer.lastName + '</td>'
+            + '<td>' + getOrderStatus(order) + '</td>'
+            + '<td>' + order.items.length + '</td>'
+            + '<td>Rp ' + order.total.toLocaleString('id-ID') + '</td>'
+            + '<td>' + new Date(order.lastUpdated).toLocaleString('id-ID') + '</td>'
+            + '<td><a href="status.html?id=' + order.id + '" class="btn" style="padding:0.5rem 1rem;font-size:0.85rem;">Lacak</a></td>'
+            + '</tr>';
+    });
+
+    if (rows === '') {
+        rows = '<tr><td colspan="7" style="text-align:center;padding:2rem;color:#888;">Tidak ada pesanan yang cocok.</td></tr>';
+    }
+
+    el('admin-order-table').innerHTML = rows;
+}
+
 function bindAdminEvents() {
     el('admin-search').addEventListener('input', renderAdminTable);
     el('admin-category-filter').addEventListener('change', renderAdminTable);
@@ -117,6 +191,12 @@ function bindAdminEvents() {
         renderAdminTable();
     });
     el('admin-add-product').addEventListener('click', addAdminProduct);
+    el('admin-order-search').addEventListener('input', renderAdminOrderTable);
+    el('admin-refresh-orders').addEventListener('click', function() {
+        renderAdminOrderTable();
+        renderAdminStats();
+        showToast('Status pesanan diperbarui.', 'success');
+    });
 }
 
 function addAdminProduct() {
@@ -181,6 +261,7 @@ window.deleteAdminProduct = deleteAdminProduct;
 
 document.addEventListener('DOMContentLoaded', function() {
     renderAdminStats();
+    renderAdminOrderTable();
     renderAdminTable();
     bindAdminEvents();
 });

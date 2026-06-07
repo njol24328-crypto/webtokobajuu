@@ -30,6 +30,32 @@
                 <h3>Kategori Tersedia</h3>
                 <p id="admin-total-categories">0</p>
             </div>
+            <div class="admin-card">
+                <h3>Total Pesanan</h3>
+                <p id="admin-total-orders">0</p>
+            </div>
+        </section>
+
+        <section class="admin-card" style="margin-bottom:2rem;">
+            <h3>Monitoring Pesanan Realtime</h3>
+            <div class="admin-controls">
+                <input type="text" id="admin-order-search" placeholder="Cari pesanan berdasarkan ID atau nama customer...">
+                <button id="admin-refresh-orders">Perbarui Status</button>
+            </div>
+            <table class="admin-table">
+                <thead>
+                    <tr>
+                        <th>ID Pesanan</th>
+                        <th>Nama</th>
+                        <th>Status</th>
+                        <th>Jumlah Item</th>
+                        <th>Total</th>
+                        <th>Diperbarui</th>
+                        <th>Aksi</th>
+                    </tr>
+                </thead>
+                <tbody id="admin-order-table"></tbody>
+            </table>
         </section>
 
         <section class="admin-controls">

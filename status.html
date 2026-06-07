@@ -14,18 +14,15 @@
             <a href="index.html" style="color:var(--text-main); font-weight:700;">Kembali ke Toko</a>
         </div>
     </header>
-    <main style="padding: 8rem 4rem 4rem; max-width: 960px; margin: 0 auto;">
+    <main style="padding: 8rem 4rem 4rem; max-width: 980px; margin: 0 auto;">
         <h1 style="font-size:2.8rem; margin-bottom:1rem; letter-spacing:2px; text-transform:uppercase;">Status Pesanan</h1>
-        <p style="font-size:1rem; line-height:2; color:#444; margin-bottom:2rem;">Masukkan informasi pesanan Anda untuk melihat status terkini. Halaman ini memberi panduan tentang cara melacak pesanan dengan cepat.</p>
-        <section style="background:white; border:1px solid #e8e8e8; border-radius:1rem; padding:2rem; box-shadow:0 12px 30px rgba(0,0,0,0.05);">
-            <h2 style="font-size:1.5rem; margin-bottom:1rem;">Cara Cek Pesanan</h2>
-            <ol style="color:#444; padding-left:1.2rem;">
-                <li>Masuk ke akun Anda.</li>
-                <li>Buka halaman pesanan.</li>
-                <li>Lihat status terakhir dari pesanan Anda.</li>
-            </ol>
-            <p style="margin-top:1.5rem;">Jika Anda membutuhkan bantuan lebih lanjut, hubungi tim layanan pelanggan di <a href="contact.html">Bantuan & Kontak</a>.</p>
-        </section>
+        <p style="font-size:1rem; line-height:2; color:#444; margin-bottom:2rem;">Masukkan ID pesanan untuk melihat status dan lokasi terkini dari pengiriman Anda.</p>
+        <div style="display:flex; gap:1rem; flex-wrap:wrap; margin-bottom:2rem;">
+            <input id="status-order-id" type="text" placeholder="Masukkan ID Pesanan" style="flex:1; padding:1rem 1.2rem; border:1px solid #ddd; border-radius:0.9rem;">
+            <button id="status-check" class="btn" style="background:#000;color:#fff; border:none; padding:1rem 1.8rem;">Cek Status</button>
+        </div>
+        <div id="status-result"></div>
     </main>
+    <script src="status.js"></script>
 </body>
 </html>
