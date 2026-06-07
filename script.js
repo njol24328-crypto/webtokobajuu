@@ -303,45 +303,63 @@ function closeSearch() {
 // 10. LIVE SEARCH
 // ═══════════════════════════════════
 function bindSearch() {
-    el('search-input').addEventListener('input', function() {
-        var q = el('search-input').value.trim().toLowerCase();
-        var resultsBox = el('search-results');
-        if (q.length < 2) { resultsBox.innerHTML = ''; return; }
-
-        // Flatten semua produk
-        var flat = [];
-        var keys = Object.keys(PRODUCTS);
-        for (var k = 0; k < keys.length; k++) {
-            var catKey = keys[k];
-            var list   = PRODUCTS[catKey];
-            for (var j = 0; j < list.length; j++) {
-                flat.push({ catKey: catKey, p: list[j] });
+    var input = el('search-input');
+    input.addEventListener('input', searchProducts);
+    input.addEventListener('keydown', function(e) {
+        if (e.key === 'Enter') {
+            e.preventDefault();
+            var results = el('search-results').querySelectorAll('.search-result-item');
+            if (results.length > 0) {
+                results[0].click();
+            } else {
+                var q = input.value.trim();
+                if (q.length > 0) showToast('Tidak ada produk ditemukan untuk "' + q + '".', 'error');
             }
         }
-
-        var hits = flat.filter(function(item) {
-            return item.p.name.toLowerCase().indexOf(q) >= 0
-                || item.p.brand.toLowerCase().indexOf(q) >= 0;
-        });
-
-        if (hits.length === 0) {
-            resultsBox.innerHTML = '<p class="search-no-result">Tidak ada produk ditemukan.</p>';
-            return;
-        }
-
-        var rhtml = '';
-        hits.slice(0, 5).forEach(function(item) {
-            var p = item.p;
-            rhtml += '<div class="search-result-item" onclick="handleSearchClick(\'' + p.id + '\',\'' + item.catKey + '\')">'
-                + '<img src="' + p.img + '" alt="' + p.name + '">'
-                + '<div>'
-                + '<p class="sr-brand">' + p.brand + '</p>'
-                + '<p class="sr-name">' + p.name + '</p>'
-                + '<p class="sr-price">Rp ' + p.price.toLocaleString('id-ID') + '</p>'
-                + '</div></div>';
-        });
-        resultsBox.innerHTML = rhtml;
     });
+}
+
+function searchProducts() {
+    var q = el('search-input').value.trim().toLowerCase();
+    var resultsBox = el('search-results');
+    if (q.length === 0) {
+        resultsBox.innerHTML = '<p class="search-no-result">Ketik nama produk atau brand untuk mencari.</p>';
+        return;
+    }
+
+    var flat = [];
+    var keys = Object.keys(PRODUCTS);
+    for (var k = 0; k < keys.length; k++) {
+        var catKey = keys[k];
+        var list   = PRODUCTS[catKey];
+        for (var j = 0; j < list.length; j++) {
+            flat.push({ catKey: catKey, p: list[j] });
+        }
+    }
+
+    var hits = flat.filter(function(item) {
+        return item.p.name.toLowerCase().indexOf(q) >= 0
+            || item.p.brand.toLowerCase().indexOf(q) >= 0
+            || item.catKey.toLowerCase().indexOf(q) >= 0;
+    });
+
+    if (hits.length === 0) {
+        resultsBox.innerHTML = '<p class="search-no-result">Tidak ada produk ditemukan.</p>';
+        return;
+    }
+
+    var rhtml = '';
+    hits.slice(0, 8).forEach(function(item) {
+        var p = item.p;
+        rhtml += '<div class="search-result-item" onclick="handleSearchClick(\'' + p.id + '\',\'' + item.catKey + '\')">'
+            + '<img src="' + p.img + '" alt="' + p.name + '">'
+            + '<div>'
+            + '<p class="sr-brand">' + p.brand + '</p>'
+            + '<p class="sr-name">' + p.name + '</p>'
+            + '<p class="sr-price">Rp ' + p.price.toLocaleString('id-ID') + ' • ' + item.catKey.toUpperCase() + '</p>'
+            + '</div></div>';
+    });
+    resultsBox.innerHTML = rhtml;
 }
 
 function handleSearchClick(productId, cat) {

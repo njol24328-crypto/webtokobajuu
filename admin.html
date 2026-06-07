@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin | LUXE.M</title>
+    <meta name="description" content="Halaman admin LUXE.M untuk melihat dan mengelola katalog produk secara lokal.">
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <main class="admin-page">
+        <header class="admin-header">
+            <div>
+                <p style="font-size:0.85rem;color:#888;text-transform:uppercase;letter-spacing:1px;margin-bottom:0.5rem;">Admin Dashboard</p>
+                <h1>Kelola Produk LUXE.M</h1>
+            </div>
+            <button class="btn-back-home" onclick="window.location.href='index.html'">
+                <i class="fa-solid fa-arrow-left" style="margin-right:0.6rem;"></i> Kembali ke Toko
+            </button>
+        </header>
+
+        <section class="admin-top">
+            <div class="admin-card">
+                <h3>Total Produk</h3>
+                <p id="admin-total-products">0</p>
+            </div>
+            <div class="admin-card">
+                <h3>Kategori Tersedia</h3>
+                <p id="admin-total-categories">0</p>
+            </div>
+        </section>
+
+        <section class="admin-controls">
+            <input type="text" id="admin-search" placeholder="Cari berdasarkan nama, brand, atau kategori...">
+            <select id="admin-category-filter">
+                <option value="all">Semua Kategori</option>
+                <option value="pria">Pria</option>
+                <option value="wanita">Wanita</option>
+                <option value="anak">Anak-anak</option>
+                <option value="luxury">Luxury</option>
+            </select>
+            <button id="admin-reset">Reset Filter</button>
+        </section>
+
+        <section>
+            <table class="admin-table">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Gambar</th>
+                        <th>Nama Produk</th>
+                        <th>Brand</th>
+                        <th>Kategori</th>
+                        <th>Harga</th>
+                        <th>Aksi</th>
+                    </tr>
+                </thead>
+                <tbody id="admin-product-table"></tbody>
+            </table>
+        </section>
+
+        <section class="admin-form">
+            <h3>Tambah Produk Baru</h3>
+            <div class="admin-form-row">
+                <input type="text" id="admin-new-name" placeholder="Nama Produk" required>
+                <input type="text" id="admin-new-brand" placeholder="Brand" required>
+            </div>
+            <div class="admin-form-row">
+                <input type="number" id="admin-new-price" placeholder="Harga (dalam Rupiah)" required>
+                <select id="admin-new-category">
+                    <option value="pria">Pria</option>
+                    <option value="wanita">Wanita</option>
+                    <option value="anak">Anak-anak</option>
+                    <option value="luxury">Luxury</option>
+                </select>
+            </div>
+            <div class="admin-form-row">
+                <input type="text" id="admin-new-image" placeholder="URL gambar (opsional)">
+                <input type="text" id="admin-new-id" placeholder="ID produk (opsional)">
+            </div>
+            <button id="admin-add-product">Tambahkan Produk</button>
+            <p class="admin-note">Perubahan ini disimpan di browser Anda dan dapat dilihat ulang saat membuka kembali halaman admin di perangkat ini.</p>
+        </section>
+    </main>
+    <script src="admin.js"></script>
+</body>
+</html>
