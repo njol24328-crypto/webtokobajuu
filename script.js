@@ -7,7 +7,7 @@
 // ═══════════════════════════════════
 var PRODUCTS = {
     pria: [
-        { id: 'p1', name: 'Premium White Linen Shirt',         brand: 'MANGO MAN',           price: 699000,  img: 'men_shirt_product_1780400575906.png',    cat: 'apparel' },
+        { id: 'p1', name: 'Premium White Linen Shirt',         brand: 'MANGO MAN',           price: 699000,  img: 'https://placehold.co/520x680/ffffff/000000?text=White+Linen+Shirt',    cat: 'apparel' },
         { id: 'p2', name: 'Essential Black Bomber Jacket',     brand: 'H&M',                 price: 799000,  img: 'https://via.placeholder.com/520x680/000000/ffffff?text=Bomber+Jacket',    cat: 'apparel' },
         { id: 'p3', name: 'Tailored Navy Chino Pants',         brand: 'UNIQLO',              price: 549000,  img: 'https://via.placeholder.com/520x680/1f3b4d/ffffff?text=Chino+Pants',       cat: 'apparel' },
         { id: 'p4', name: 'Soft Cotton Polo Shirt',            brand: 'ZARA MAN',            price: 399000,  img: 'https://via.placeholder.com/520x680/2c3e50/ffffff?text=Polo+Shirt',       cat: 'apparel' },
@@ -29,7 +29,7 @@ var PRODUCTS = {
     luxury: [
         { id: 'l1', name: 'Cashmere Rollneck Sweater', brand: 'BURBERRY',         price: 12500000, img: 'https://via.placeholder.com/520x680/776f68/ffffff?text=Cashmere+Sweater', cat: 'apparel' },
         { id: 'l2', name: 'Tailored Wool Overcoat',   brand: 'TOM FORD',        price: 21500000, img: 'https://via.placeholder.com/520x680/4f4a45/ffffff?text=Wool+Overcoat',  cat: 'apparel' },
-        { id: 'l3', name: 'Silk Weave Formal Shirt',  brand: 'ERMENEGILDO ZEGNA', price: 8500000, img: 'men_shirt_product_1780400575906.png',    cat: 'apparel' }
+        { id: 'l3', name: 'Silk Weave Formal Shirt',  brand: 'ERMENEGILDO ZEGNA', price: 8500000, img: 'https://placehold.co/520x680/ece5dd/000000?text=Formal+Silk+Shirt',    cat: 'apparel' }
     ]
 };
 
