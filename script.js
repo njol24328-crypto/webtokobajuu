@@ -33,6 +33,8 @@ var PRODUCTS = {
     ]
 };
 
+var DEFAULT_NO_IMAGE = 'data:image/svg+xml;charset=UTF-8,<svg xmlns="http://www.w3.org/2000/svg" width="520" height="680"><rect width="520" height="680" fill="%23f0f0f0"/><text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" font-family="Arial,sans-serif" font-size="32" fill="%23999">No%20Image</text></svg>';
+
 var HERO_DATA = {
     pria:   { tag: 'Koleksi Pria',   title: 'ESSENTIALS<br>FOR HIM',   sub: 'Elevate your daily rotation with our curated premium menswear.' },
     wanita: { tag: 'Koleksi Wanita', title: 'GRACE &amp;<br>ELEGANCE', sub: 'Temukan koleksi wanita terkurasi untuk setiap kesempatan.' },
@@ -140,11 +142,12 @@ function renderProducts(cat, filter) {
 
     var html = '';
     items.forEach(function(p) {
+        var imgSrc = p.img || DEFAULT_NO_IMAGE;
         var isWish = wishlist.indexOf(p.id) >= 0;
         var heartClass = isWish ? 'fa-solid active' : 'fa-regular';
-        html += '<div class="product-card" data-id="' + p.id + '" data-name="' + p.name + '" data-price="' + p.price + '" data-brand="' + p.brand + '" data-img="' + p.img + '">'
+        html += '<div class="product-card" data-id="' + p.id + '" data-name="' + p.name + '" data-price="' + p.price + '" data-brand="' + p.brand + '" data-img="' + imgSrc + '">'
             + '<div class="product-img-wrapper">'
-            + '<img src="' + p.img + '" alt="' + p.name + '" loading="lazy" onerror="this.onerror=null;this.src=\'https://placehold.co/520x680/cccccc/000000?text=No+Image\';">'
+            + '<img src="' + imgSrc + '" alt="' + p.name + '" loading="lazy" onerror="this.onerror=null;this.src=\'' + DEFAULT_NO_IMAGE + '\';">'
             + '<div class="product-actions"><button class="add-to-cart"><i class="fa-solid fa-bag-shopping"></i> Tambah ke Keranjang</button></div>'
             + '</div>'
             + '<div class="product-info">'
@@ -229,8 +232,9 @@ function updateCartUI() {
     }
     var chtml = '';
     cart.forEach(function(item) {
+        var cartImgSrc = item.img || DEFAULT_NO_IMAGE;
         chtml += '<div class="cart-item">'
-            + '<img src="' + item.img + '" alt="' + item.name + '" onerror="this.onerror=null;this.src=\'https://placehold.co/120x90/cccccc/000000?text=No+Image\';">'
+            + '<img src="' + cartImgSrc + '" alt="' + item.name + '" onerror="this.onerror=null;this.src=\'' + DEFAULT_NO_IMAGE + '\';">'
             + '<div class="cart-item-info">'
             + '<h5>' + item.brand + '</h5>'
             + '<p>' + item.name + '</p>'

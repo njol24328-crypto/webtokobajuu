@@ -6,6 +6,8 @@
 var ADMIN_STORAGE_KEY = 'adminProducts';
 var ORDER_HISTORY_KEY = 'orderHistory';
 
+var DEFAULT_ADMIN_IMG = 'data:image/svg+xml;charset=UTF-8,<svg xmlns="http://www.w3.org/2000/svg" width="520" height="680"><rect width="520" height="680" fill="%23f0f0f0"/><text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" font-family="Arial,sans-serif" font-size="32" fill="%23999">No%20Image</text></svg>';
+
 var DEFAULT_ADMIN_PRODUCTS = {
     pria: [
         { id: 'p1', name: 'Premium White Linen Shirt',         brand: 'MANGO MAN',           price: 699000,  img: 'https://placehold.co/520x680/ffffff/000000?text=White+Linen+Shirt',    cat: 'apparel' },
@@ -40,16 +42,27 @@ function el(id) { return document.getElementById(id); }
 
 function loadAdminProducts() {
     var raw = localStorage.getItem(ADMIN_STORAGE_KEY);
-    if (!raw) return JSON.parse(JSON.stringify(DEFAULT_ADMIN_PRODUCTS));
+    if (!raw) return normalizeAdminProducts(JSON.parse(JSON.stringify(DEFAULT_ADMIN_PRODUCTS)));
     try {
-        return JSON.parse(raw);
+        return normalizeAdminProducts(JSON.parse(raw));
     } catch (e) {
-        return JSON.parse(JSON.stringify(DEFAULT_ADMIN_PRODUCTS));
+        return normalizeAdminProducts(JSON.parse(JSON.stringify(DEFAULT_ADMIN_PRODUCTS)));
     }
 }
 
 function saveAdminProducts() {
     localStorage.setItem(ADMIN_STORAGE_KEY, JSON.stringify(adminProducts));
+}
+
+function normalizeAdminProducts(products) {
+    Object.keys(products).forEach(function(cat) {
+        products[cat].forEach(function(product) {
+            if (!product.img) {
+                product.img = DEFAULT_ADMIN_IMG;
+            }
+        });
+    });
+    return products;
 }
 
 function getFlattenedProducts() {
@@ -120,9 +133,10 @@ function renderAdminTable() {
 
         if (!matchesQuery || !matchesCategory) return;
 
+        var productImgSrc = product.img || DEFAULT_ADMIN_IMG;
         rows += '<tr>'
             + '<td>' + product.id + '</td>'
-            + '<td><img src="' + product.img + '" alt="' + product.name + '" onerror="this.onerror=null;this.src=\'https://placehold.co/120x90/cccccc/000000?text=No+Image\';"></td>'
+            + '<td><img src="' + productImgSrc + '" alt="' + product.name + '" onerror="this.onerror=null;this.src=\'' + DEFAULT_ADMIN_IMG + '\';"></td>'
             + '<td>' + product.name + '</td>'
             + '<td>' + product.brand + '</td>'
             + '<td>' + product.category + '</td>'
@@ -204,7 +218,7 @@ function addAdminProduct() {
     var brand = el('admin-new-brand').value.trim();
     var price = parseInt(el('admin-new-price').value, 10);
     var category = el('admin-new-category').value;
-    var image = el('admin-new-image').value.trim() || 'https://placehold.co/120x90?text=Produk';
+    var image = el('admin-new-image').value.trim() || DEFAULT_ADMIN_IMG;
     var providedId = el('admin-new-id').value.trim();
 
     if (!name || !brand || !price || price <= 0) {
