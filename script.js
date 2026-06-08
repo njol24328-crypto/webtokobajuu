@@ -8,28 +8,28 @@
 var PRODUCTS = {
     pria: [
         { id: 'p1', name: 'Premium White Linen Shirt',         brand: 'MANGO MAN',           price: 699000,  img: 'men_shirt_product_1780400575906.png',    cat: 'apparel' },
-        { id: 'p2', name: 'Essential Black Bomber Jacket',     brand: 'H&M',                 price: 799000,  img: 'men_shirt_product_1780400575906.png',    cat: 'apparel' },
-        { id: 'p3', name: 'Tailored Navy Chino Pants',         brand: 'UNIQLO',              price: 549000,  img: 'men_shirt_product_1780400575906.png',       cat: 'apparel' },
-        { id: 'p4', name: 'Soft Cotton Polo Shirt',            brand: 'ZARA MAN',            price: 399000,  img: 'men_shirt_product_1780400575906.png',       cat: 'apparel' },
-        { id: 'p5', name: 'Vintage Indigo Denim Overshirt',     brand: 'LEVI’S',              price: 999000,  img: 'men_shirt_product_1780400575906.png',  cat: 'apparel' },
-        { id: 'p6', name: 'Stretch Performance Jogger Pants',   brand: 'NIKE',                price: 649000,  img: 'men_sneakers_product_1780400547442.png',      cat: 'apparel' },
-        { id: 'p7', name: 'Structured Grey Wool Blazer',       brand: 'ZARA MAN',            price: 1200000, img: 'men_shirt_product_1780400575906.png',     cat: 'apparel' },
-        { id: 'p8', name: 'Relaxed Fit Denim Shirt',           brand: 'LEVI’S',              price: 850000,  img: 'men_shirt_product_1780400575906.png',      cat: 'apparel' },
-        { id: 'p9', name: 'Classic White Oxford Shirt',        brand: 'BROOKS BROTHERS',      price: 760000,  img: 'men_shirt_product_1780400575906.png',    cat: 'apparel' }
+        { id: 'p2', name: 'Essential Black Bomber Jacket',         brand: 'H&M',           price: 799000,  img: 'hero_banner_men_fashion_1780400311037.png',    cat: 'apparel' },
+        { id: 'p3', name: 'Tailored Navy Chino Pants',         brand: 'UNIQLO',           price: 549000,  img: 'hero_banner_men_fashion_1780400311037.png',    cat: 'apparel' },
+        { id: 'p4', name: 'Soft Cotton Polo Shirt',         brand: 'ZARA MAN',           price: 399000,  img: 'men_shirt_product_1780400575906.png',    cat: 'apparel' },
+        { id: 'p5', name: 'Vintage Indigo Denim Overshirt',         brand: 'LEVI’S',           price: 999000,  img: 'hero_banner_men_fashion_1780400311037.png',    cat: 'apparel' },
+        { id: 'p6', name: 'Stretch Performance Jogger Pants',         brand: 'NIKE',           price: 649000,  img: 'men_sneakers_product_1780400547442.png',    cat: 'apparel' },
+        { id: 'p7', name: 'Structured Grey Wool Blazer',         brand: 'ZARA MAN',           price: 1200000,  img: 'hero_banner_men_fashion_1780400311037.png',    cat: 'apparel' },
+        { id: 'p8', name: 'Relaxed Fit Denim Shirt',         brand: 'LEVI’S',           price: 850000,  img: 'men_shirt_product_1780400575906.png',    cat: 'apparel' },
+        { id: 'p9', name: 'Classic White Oxford Shirt',         brand: 'BROOKS BROTHERS',           price: 760000,  img: 'hero_banner_men_fashion_1780400311037.png',    cat: 'apparel' }
     ],
     wanita: [
-        { id: 'w1', name: 'Floral Midi Dress',           brand: 'ZARA',   price: 899000, img: 'men_shirt_product_1780400575906.png',    cat: 'apparel' },
-        { id: 'w2', name: 'Silk Wrap Blouse',            brand: 'MANGO',  price: 650000, img: 'men_shirt_product_1780400575906.png',       cat: 'apparel' },
-        { id: 'w3', name: 'Satin Slip Dress',            brand: 'H&M',    price: 750000, img: 'men_shirt_product_1780400575906.png',      cat: 'apparel' }
+        { id: 'w1', name: 'Floral Midi Dress',         brand: 'ZARA',           price: 899000,  img: 'hero_banner_men_fashion_1780400311037.png',    cat: 'apparel' },
+        { id: 'w2', name: 'Silk Wrap Blouse',         brand: 'MANGO',           price: 650000,  img: 'hero_banner_men_fashion_1780400311037.png',    cat: 'apparel' },
+        { id: 'w3', name: 'Satin Slip Dress',         brand: 'H&M',           price: 750000,  img: 'hero_banner_men_fashion_1780400311037.png',    cat: 'apparel' }
     ],
     anak: [
-        { id: 'a1', name: 'Kaos Bergambar Fun',         brand: 'GAP KIDS',   price: 299000, img: 'men_shirt_product_1780400575906.png',  cat: 'apparel' },
-        { id: 'a2', name: 'Set Piyama Warna Ceria',     brand: 'CARTER’S',   price: 350000, img: 'men_shirt_product_1780400575906.png', cat: 'apparel' }
+        { id: 'a1', name: 'Kaos Bergambar Fun',         brand: 'GAP KIDS',           price: 299000,  img: 'hero_banner_men_fashion_1780400311037.png',    cat: 'apparel' },
+        { id: 'a2', name: 'Set Piyama Warna Ceria',         brand: 'CARTER’S',           price: 350000,  img: 'hero_banner_men_fashion_1780400311037.png',    cat: 'apparel' }
     ],
     luxury: [
-        { id: 'l1', name: 'Cashmere Rollneck Sweater', brand: 'BURBERRY',         price: 12500000, img: 'men_watch_product_1780400562688.png', cat: 'apparel' },
-        { id: 'l2', name: 'Tailored Wool Overcoat',   brand: 'TOM FORD',        price: 21500000, img: 'men_watch_product_1780400562688.png',  cat: 'apparel' },
-        { id: 'l3', name: 'Silk Weave Formal Shirt',  brand: 'ERMENEGILDO ZEGNA', price: 8500000, img: 'men_watch_product_1780400562688.png',    cat: 'apparel' }
+        { id: 'l1', name: 'Cashmere Rollneck Sweater',         brand: 'BURBERRY',           price: 12500000,  img: 'men_watch_product_1780400562688.png',    cat: 'apparel' },
+        { id: 'l2', name: 'Tailored Wool Overcoat',         brand: 'TOM FORD',           price: 21500000,  img: 'men_watch_product_1780400562688.png',    cat: 'apparel' },
+        { id: 'l3', name: 'Silk Weave Formal Shirt',         brand: 'ERMENEGILDO ZEGNA',           price: 8500000,  img: 'men_watch_product_1780400562688.png',    cat: 'apparel' }
     ]
 };
 
