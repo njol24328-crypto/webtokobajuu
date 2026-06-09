@@ -328,6 +328,9 @@ function renderAdminTable() {
 }
 
 function deleteAdminProduct(id, category) {
+    var ok = confirm('Konfirmasi: Hapus produk dengan ID ' + id + '?\nTindakan ini tidak dapat dibatalkan.');
+    if (!ok) return;
+
     adminProducts[category] = adminProducts[category].filter(function(item) {
         return item.id !== id;
     });
@@ -426,7 +429,7 @@ function clearAdminForm() {
     el('admin-new-image-file').value = '';
     el('admin-new-id').value = '';
     el('admin-new-category').value = 'pria';
-    renderImagePreview();
+    renderIagePreview();
 }
 
 function renderImagePreview() {
