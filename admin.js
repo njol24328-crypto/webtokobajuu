@@ -393,6 +393,7 @@ function bindAdminEvents() {
         showToast('Data pembeli diperbarui.', 'success');
     });
     el('admin-new-image').addEventListener('input', renderImagePreview);
+    el('admin-new-image-file').addEventListener('change', renderImagePreview);
     el('admin-add-action').addEventListener('click', function() {
         document.querySelector('.admin-form').scrollIntoView({ behavior: 'smooth', block: 'start' });
         showToast('Scroll ke form tambah produk.', 'success');
@@ -459,21 +460,83 @@ function clearAdminForm() {
     el('admin-new-brand').value = '';
     el('admin-new-price').value = '';
     el('admin-new-image').value = '';
+    el('admin-new-image-file').value = '';
     el('admin-new-id').value = '';
     el('admin-new-category').value = 'pria';
     renderImagePreview();
 }
 
 function renderImagePreview() {
-    var imageUrl = el('admin-new-image').value.trim();
+    var fileInput = el('admin-new-image-file');
     var preview = el('admin-image-preview');
-    if (!imageUrl) {
-        preview.src = DEFAULT_ADMIN_IMG;
-        preview.alt = 'Preview gambar produk';
+    var imageUrl = el('admin-new-image').value.trim();
+
+    if (fileInput.files && fileInput.files[0]) {
+        var file = fileInput.files[0];
+        var reader = new FileReader();
+        reader.onload = function(event) {
+            preview.src = event.target.result;
+            preview.alt = 'Preview gambar produk dari file';
+        };
+        reader.readAsDataURL(file);
         return;
     }
-    preview.src = imageUrl;
-    preview.alt = 'Preview gambar produk dari URL';
+
+    if (imageUrl) {
+        preview.src = imageUrl;
+        preview.alt = 'Preview gambar produk dari URL';
+        return;
+    }
+
+    preview.src = DEFAULT_ADMIN_IMG;
+    preview.alt = 'Preview gambar produk';
+}
+
+function getImageSource() {
+    var fileInput = el('admin-new-image-file');
+    var imageUrl = el('admin-new-image').value.trim();
+
+    if (fileInput.files && fileInput.files[0]) {
+        return el('admin-image-preview').src;
+    }
+    return imageUrl || DEFAULT_ADMIN_IMG;
+}
+
+function addAdminProduct() {
+    var name = el('admin-new-name').value.trim();
+    var brand = el('admin-new-brand').value.trim();
+    var price = parseInt(el('admin-new-price').value, 10);
+    var category = el('admin-new-category').value;
+    var image = getImageSource();
+    var providedId = el('admin-new-id').value.trim();
+
+    if (!name || !brand || !price || price <= 0) {
+        showToast('Lengkapi nama, brand, dan harga produk.', 'error');
+        return;
+    }
+
+    var id = providedId || category.charAt(0) + Date.now().toString().slice(-5);
+    var exists = getFlattenedProducts().some(function(item) { return item.id === id; });
+    if (exists) {
+        showToast('ID produk sudah digunakan. Gunakan ID lain atau kosongkan field.', 'error');
+        return;
+    }
+
+    var nextProduct = {
+        id: id,
+        name: name,
+        brand: brand,
+        price: price,
+        img: image,
+        cat: 'apparel'
+    };
+
+    adminProducts[category].push(nextProduct);
+    saveAdminProducts();
+    renderAdminStats();
+    renderAdminTable();
+    clearAdminForm();
+    showToast('Produk baru berhasil ditambahkan.', 'success');
 }
 
 function exportAdminData() {

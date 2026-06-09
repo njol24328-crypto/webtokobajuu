@@ -893,11 +893,27 @@ footer {
     gap: 1rem;
 }
 .admin-form-row input,
-.admin-form-row select {
+.admin-form-row select,
+.admin-form-row input[type="file"] {
     width: 100%;
     padding: 1rem 1rem;
     border: 1px solid #ddd;
     border-radius: 0.85rem;
+    background: white;
+}
+.admin-form-row input[type="file"] {
+    padding: 0.75rem 1rem;
+}
+.admin-file-help {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 1rem;
+    border-radius: 0.85rem;
+    border: 1px dashed #cbd5e1;
+    color: #475569;
+    font-size: 0.95rem;
+    background: #f8fafc;
 }
 .admin-form button {
     margin-top: 1rem;
