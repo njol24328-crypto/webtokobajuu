@@ -465,20 +465,11 @@ function getImageSource() {
     return imageUrl || DEFAULT_ADMIN_IMG;
 }
 
-function uploadImageFile(file) {
-    var form = new FormData();
-    form.append('image', file);
-    return fetch('/api/upload', { method: 'POST', body: form })
-        .then(function(res) { if (!res.ok) throw new Error('Upload failed'); return res.json(); })
-        .then(function(json) { return json.url; });
-}
-
-async function addAdminProduct() {
+function addAdminProduct() {
     var name = el('admin-new-name').value.trim();
     var brand = el('admin-new-brand').value.trim();
     var price = parseInt(el('admin-new-price').value, 10);
     var category = el('admin-new-category').value;
-    var fileInput = el('admin-new-image-file');
     var providedId = el('admin-new-id').value.trim();
 
     if (!name || !brand || !price || price <= 0) {
@@ -493,19 +484,7 @@ async function addAdminProduct() {
         return;
     }
 
-    var imageSrc = DEFAULT_ADMIN_IMG;
-    try {
-        if (fileInput.files && fileInput.files[0]) {
-            // upload file to backend
-            var uploadedUrl = await uploadImageFile(fileInput.files[0]);
-            imageSrc = uploadedUrl;
-        } else {
-            imageSrc = el('admin-new-image').value.trim() || DEFAULT_ADMIN_IMG;
-        }
-    } catch (e) {
-        showToast('Gagal upload gambar. Gunakan URL atau coba lagi.', 'error');
-        return;
-    }
+    var imageSrc = getImageSource() || DEFAULT_ADMIN_IMG;
 
     var nextProduct = {
         id: id,
