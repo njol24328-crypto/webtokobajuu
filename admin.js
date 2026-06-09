@@ -168,6 +168,13 @@ function getOrderStatus(order) {
     return order.statusTimeline[order.statusIndex] ? order.statusTimeline[order.statusIndex].status : 'Selesai';
 }
 
+function getStatusClass(order) {
+    var status = getOrderStatus(order).toLowerCase();
+    if (status.indexOf('diproses') !== -1) return 'status-pill--processing';
+    if (status.indexOf('dikirim') !== -1 || status.indexOf('selesai') !== -1) return 'status-pill--completed';
+    return 'status-pill--pending';
+}
+
 function getLastOrderDate(order) {
     return new Date(order.lastUpdated).toLocaleDateString('id-ID', { day: '2-digit', month: 'short', year: 'numeric' });
 }
@@ -347,7 +354,7 @@ function renderAdminOrderTable() {
         rows += '<tr>'
             + '<td>' + order.id + '</td>'
             + '<td>' + order.customer.firstName + ' ' + order.customer.lastName + '</td>'
-            + '<td>' + getOrderStatus(order) + '</td>'
+            + '<td><span class="admin-status-pill ' + getStatusClass(order) + '">' + getOrderStatus(order) + '</span></td>'
             + '<td>' + order.items.length + '</td>'
             + '<td>Rp ' + order.total.toLocaleString('id-ID') + '</td>'
             + '<td>' + new Date(order.lastUpdated).toLocaleString('id-ID') + '</td>'
@@ -385,6 +392,20 @@ function bindAdminEvents() {
         renderAdminStats();
         showToast('Data pembeli diperbarui.', 'success');
     });
+    el('admin-new-image').addEventListener('input', renderImagePreview);
+    el('admin-add-action').addEventListener('click', function() {
+        document.querySelector('.admin-form').scrollIntoView({ behavior: 'smooth', block: 'start' });
+        showToast('Scroll ke form tambah produk.', 'success');
+    });
+    el('admin-refresh-all').addEventListener('click', function() {
+        renderAdminStats();
+        renderAdminTable();
+        renderAdminOrderTable();
+        renderCustomerTable();
+        renderHistoryTable();
+        showToast('Dashboard diperbarui.', 'success');
+    });
+    el('admin-export-data').addEventListener('click', exportAdminData);
     el('admin-logout').addEventListener('click', function() {
         lockAdminView();
         showToast('Anda telah logout.', 'success');
@@ -440,6 +461,38 @@ function clearAdminForm() {
     el('admin-new-image').value = '';
     el('admin-new-id').value = '';
     el('admin-new-category').value = 'pria';
+    renderImagePreview();
+}
+
+function renderImagePreview() {
+    var imageUrl = el('admin-new-image').value.trim();
+    var preview = el('admin-image-preview');
+    if (!imageUrl) {
+        preview.src = DEFAULT_ADMIN_IMG;
+        preview.alt = 'Preview gambar produk';
+        return;
+    }
+    preview.src = imageUrl;
+    preview.alt = 'Preview gambar produk dari URL';
+}
+
+function exportAdminData() {
+    var orders = loadOrderHistory();
+    var csvRows = ['Order ID,Nama,Email,Total,Status,Tanggal Terakhir'];
+    orders.forEach(function(order) {
+        csvRows.push('"' + order.id + '","' + order.customer.firstName + ' ' + order.customer.lastName + '","' + order.customer.email + '","Rp ' + (order.total || 0).toLocaleString('id-ID') + '","' + getOrderStatus(order) + '","' + new Date(order.lastUpdated).toLocaleString('id-ID') + '"');
+    });
+    var csvContent = csvRows.join('\n');
+    var blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+    var url = URL.createObjectURL(blob);
+    var link = document.createElement('a');
+    link.href = url;
+    link.setAttribute('download', 'luxem-order-report.csv');
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    URL.revokeObjectURL(url);
+    showToast('Data pesanan berhasil diekspor.', 'success');
 }
 
 function showToast(message, type) {

@@ -39,6 +39,21 @@
             </div>
         </header>
 
+        <section class="admin-panel-top">
+            <div class="admin-welcome-card">
+                <div>
+                    <p class="eyebrow">SELAMAT DATANG, ADMIN</p>
+                    <h2>Dashboard Kontrol LUXE.M</h2>
+                    <p class="admin-welcome-text">Pantau penjualan, pelanggan, dan produk dengan tampilan dashboard yang profesional. Gunakan fitur inti untuk mengambil keputusan lebih cepat.</p>
+                </div>
+                <div class="admin-quick-actions">
+                    <button class="btn btn-accent" id="admin-add-action"><i class="fa-solid fa-plus"></i> Tambah Produk</button>
+                    <button class="btn btn-secondary" id="admin-refresh-all"><i class="fa-solid fa-arrows-rotate"></i> Refresh Semua</button>
+                    <button class="btn btn-outline" id="admin-export-data"><i class="fa-solid fa-file-export"></i> Export Pesanan</button>
+                </div>
+            </div>
+        </section>
+
         <section class="admin-top">
             <div class="admin-card">
                 <h3>Total Produk</h3>
@@ -74,6 +89,15 @@
                 </thead>
                 <tbody id="admin-order-table"></tbody>
             </table>
+        </section>
+
+        <section class="admin-card admin-activity-card">
+            <h3>Aktivitas Terbaru</h3>
+            <ul class="activity-list">
+                <li class="activity-item"><div><strong>Pesanan baru diterima</strong><span>ID LXM-00000002 masuk ke dalam sistem.</span></div><time>5 menit lalu</time></li>
+                <li class="activity-item"><div><strong>Produk baru ditambahkan</strong><span>Kaos olahraga premium berhasil dipublikasikan.</span></div><time>15 menit lalu</time></li>
+                <li class="activity-item"><div><strong>Pembeli baru terdaftar</strong><span>Anton Pratama melakukan pembelian pertama.</span></div><time>30 menit lalu</time></li>
+            </ul>
         </section>
 
         <section class="admin-card">
@@ -173,6 +197,12 @@
             <div class="admin-form-row">
                 <input type="text" id="admin-new-image" placeholder="URL gambar (opsional)">
                 <input type="text" id="admin-new-id" placeholder="ID produk (opsional)">
+            </div>
+            <div class="admin-form-row admin-image-preview-row">
+                <div class="admin-image-preview-card">
+                    <span>Preview Gambar Produk</span>
+                    <img id="admin-image-preview" src="data:image/svg+xml;charset=UTF-8,<svg xmlns='http://www.w3.org/2000/svg' width='520' height='680'><rect width='520' height='680' fill='%23f0f0f0'/><text x='50%' y='50%' dominant-baseline='middle' text-anchor='middle' font-family='Arial,sans-serif' font-size='28' fill='%23999'>No Image</text></svg>" alt="Preview gambar produk">
+                </div>
             </div>
             <button id="admin-add-product">Tambahkan Produk</button>
             <p class="admin-note">Perubahan ini disimpan di browser Anda dan dapat dilihat ulang saat membuka kembali halaman admin di perangkat ini.</p>

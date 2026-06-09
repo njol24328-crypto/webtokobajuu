@@ -915,6 +915,156 @@ footer {
     color: #666;
     font-size: 0.9rem;
 }
+.admin-panel-top {
+    margin-bottom: 2rem;
+}
+.admin-welcome-card {
+    display: flex;
+    justify-content: space-between;
+    gap: 2rem;
+    padding: 2rem;
+    border-radius: 1.25rem;
+    background: linear-gradient(135deg, #2f327d, #4f55c4);
+    color: white;
+    box-shadow: 0 24px 60px rgba(47, 50, 125, 0.12);
+}
+.admin-welcome-card .eyebrow {
+    margin-bottom: 0.75rem;
+    color: rgba(255,255,255,0.75);
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    font-size: 0.8rem;
+}
+.admin-welcome-card h2 {
+    font-size: 2.2rem;
+    margin-bottom: 1rem;
+}
+.admin-welcome-text {
+    max-width: 600px;
+    line-height: 1.8;
+    color: rgba(255,255,255,0.85);
+}
+.admin-quick-actions {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+    align-items: center;
+}
+.btn-accent {
+    background: #ff5f8f;
+    color: white;
+    border: 1px solid transparent;
+}
+.btn-secondary {
+    background: rgba(255,255,255,0.16);
+    color: white;
+    border: 1px solid rgba(255,255,255,0.32);
+}
+.btn-outline {
+    background: transparent;
+    color: white;
+    border: 1px solid rgba(255,255,255,0.5);
+}
+.btn-accent:hover,
+.btn-secondary:hover,
+.btn-outline:hover {
+    opacity: 0.95;
+}
+.admin-image-preview-card {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    padding: 1rem;
+    border: 1px solid #e5e7eb;
+    background: #f8fafc;
+    border-radius: 1rem;
+    max-width: 320px;
+}
+.admin-image-preview-card span {
+    font-size: 0.85rem;
+    color: #555;
+    font-weight: 700;
+}
+.admin-image-preview-card img {
+    width: 100%;
+    min-height: 180px;
+    object-fit: contain;
+    border-radius: 1rem;
+    border: 1px solid #e5e7eb;
+    background: white;
+}
+.activity-list {
+    padding: 0;
+    margin: 0;
+    list-style: none;
+}
+.activity-item {
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
+    padding: 1rem 1.2rem;
+    border-bottom: 1px solid #f1f5f9;
+    transition: background 0.25s ease;
+}
+.activity-item:hover {
+    background: #f8fafc;
+}
+.activity-item strong {
+    display: block;
+    margin-bottom: 0.35rem;
+}
+.activity-item time {
+    color: #7c8a99;
+    font-size: 0.85rem;
+}
+.admin-status-pill {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.45rem 0.9rem;
+    border-radius: 999px;
+    font-size: 0.82rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+.status-pill--processing {
+    color: #b45309;
+    background: rgba(251,191,36,0.16);
+}
+.status-pill--completed {
+    color: #047857;
+    background: rgba(16,185,129,0.16);
+}
+.status-pill--pending {
+    color: #1d4ed8;
+    background: rgba(59,130,246,0.16);
+}
+.admin-page {
+    padding: 6rem 4rem 4rem;
+    max-width: 1400px;
+    margin: 0 auto;
+    background: linear-gradient(180deg, #eef2ff 0%, #ffffff 100%);
+}
+.admin-table th {
+    background: rgba(79,85,196,0.08);
+}
+.admin-table td {
+    vertical-align: middle;
+}
+.admin-table td img {
+    width: 100px;
+    height: 70px;
+}
+.admin-header {
+    align-items: flex-start;
+}
+.admin-header h1 {
+    font-size: 2.6rem;
+}
+.admin-header .btn-back-home {
+    min-width: 180px;
+}
 @media (max-width: 900px) {
     .admin-top,
     .admin-form-row {
