@@ -418,43 +418,6 @@ function bindAdminEvents() {
     });
 }
 
-function addAdminProduct() {
-    var name = el('admin-new-name').value.trim();
-    var brand = el('admin-new-brand').value.trim();
-    var price = parseInt(el('admin-new-price').value, 10);
-    var category = el('admin-new-category').value;
-    var image = el('admin-new-image').value.trim() || DEFAULT_ADMIN_IMG;
-    var providedId = el('admin-new-id').value.trim();
-
-    if (!name || !brand || !price || price <= 0) {
-        showToast('Lengkapi nama, brand, dan harga produk.', 'error');
-        return;
-    }
-
-    var id = providedId || category.charAt(0) + Date.now().toString().slice(-5);
-    var exists = getFlattenedProducts().some(function(item) { return item.id === id; });
-    if (exists) {
-        showToast('ID produk sudah digunakan. Gunakan ID lain atau kosongkan field.', 'error');
-        return;
-    }
-
-    var nextProduct = {
-        id: id,
-        name: name,
-        brand: brand,
-        price: price,
-        img: image,
-        cat: 'apparel'
-    };
-
-    adminProducts[category].push(nextProduct);
-    saveAdminProducts();
-    renderAdminStats();
-    renderAdminTable();
-    clearAdminForm();
-    showToast('Produk baru berhasil ditambahkan.', 'success');
-}
-
 function clearAdminForm() {
     el('admin-new-name').value = '';
     el('admin-new-brand').value = '';
