@@ -10,15 +10,33 @@
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
-    <main class="admin-page">
+    <div id="admin-login-modal" class="modal active">
+        <div class="modal-content admin-login-modal-content">
+            <div class="modal-logo">LUXE.M Admin</div>
+            <h2>Masuk Admin</h2>
+            <p>Masukkan kata sandi admin untuk mengakses dashboard monitoring.</p>
+            <form id="admin-login-form">
+                <input type="password" id="admin-pass" placeholder="Password admin" autocomplete="current-password" required>
+                <button type="submit" class="btn modal-btn">Masuk</button>
+            </form>
+            <p class="modal-footer">Akses hanya untuk administrator.</p>
+        </div>
+    </div>
+
+    <main id="admin-dashboard" class="admin-page" hidden>
         <header class="admin-header">
             <div>
                 <p style="font-size:0.85rem;color:#888;text-transform:uppercase;letter-spacing:1px;margin-bottom:0.5rem;">Admin Dashboard</p>
                 <h1>Kelola Produk LUXE.M</h1>
             </div>
-            <button class="btn-back-home" onclick="window.location.href='index.html'">
-                <i class="fa-solid fa-arrow-left" style="margin-right:0.6rem;"></i> Kembali ke Toko
-            </button>
+            <div>
+                <button class="btn-back-home" id="admin-logout">
+                    <i class="fa-solid fa-right-from-bracket" style="margin-right:0.6rem;"></i> Logout
+                </button>
+                <button class="btn-back-home" onclick="window.location.href='index.html'">
+                    <i class="fa-solid fa-arrow-left" style="margin-right:0.6rem;"></i> Kembali ke Toko
+                </button>
+            </div>
         </header>
 
         <section class="admin-top">
@@ -55,6 +73,56 @@
                     </tr>
                 </thead>
                 <tbody id="admin-order-table"></tbody>
+            </table>
+        </section>
+
+        <section class="admin-card">
+            <h3>Dashboard Pembeli</h3>
+            <div class="admin-top" style="margin-bottom:1.5rem;">
+                <div class="admin-card">
+                    <h3>Total Pembeli</h3>
+                    <p id="admin-total-customers">0</p>
+                </div>
+                <div class="admin-card">
+                    <h3>Total Pendapatan</h3>
+                    <p id="admin-total-revenue">Rp 0</p>
+                </div>
+                <div class="admin-card">
+                    <h3>Pesanan Selesai</h3>
+                    <p id="admin-completed-orders">0</p>
+                </div>
+            </div>
+            <div class="admin-controls">
+                <input type="text" id="admin-customer-search" placeholder="Cari pembeli berdasarkan nama, email, atau kota...">
+                <button id="admin-refresh-customers">Perbarui Data</button>
+            </div>
+            <table class="admin-table">
+                <thead>
+                    <tr>
+                        <th>Nama</th>
+                        <th>Email</th>
+                        <th>Telepon</th>
+                        <th>Kota</th>
+                        <th>Pesanan</th>
+                    </tr>
+                </thead>
+                <tbody id="admin-customer-table"></tbody>
+            </table>
+        </section>
+
+        <section class="admin-card">
+            <h3>Riwayat Pembelian</h3>
+            <table class="admin-table">
+                <thead>
+                    <tr>
+                        <th>ID Pesanan</th>
+                        <th>Pembeli</th>
+                        <th>Tanggal</th>
+                        <th>Total</th>
+                        <th>Status Terakhir</th>
+                    </tr>
+                </thead>
+                <tbody id="admin-history-table"></tbody>
             </table>
         </section>
 

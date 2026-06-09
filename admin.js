@@ -8,6 +8,46 @@ var ORDER_HISTORY_KEY = 'orderHistory';
 
 var DEFAULT_ADMIN_IMG = 'data:image/svg+xml;charset=UTF-8,<svg xmlns="http://www.w3.org/2000/svg" width="520" height="680"><rect width="520" height="680" fill="%23f0f0f0"/><text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" font-family="Arial,sans-serif" font-size="32" fill="%23999">No%20Image</text></svg>';
 
+var ADMIN_PASSWORD = 'admin1234';
+var ADMIN_AUTH_KEY = 'adminAuthenticated';
+var DEFAULT_ORDER_HISTORY = [
+    {
+        id: 'LXM-00000001',
+        customer: {
+            firstName: 'Dewi',
+            lastName: 'Santoso',
+            email: 'dewi@example.com',
+            phone: '081234567890',
+            address: 'Jl. Melati No. 12',
+            city: 'Jakarta',
+            province: 'DKI Jakarta',
+            postal: '12345'
+        },
+        shippingMethod: 'Reguler',
+        paymentMethod: 'Kartu Kredit',
+        subtotal: 1498000,
+        shippingCost: 30000,
+        discount: 0,
+        total: 1528000,
+        statusIndex: 1,
+        lastUpdated: '2026-06-09T08:00:00Z',
+        items: [
+            { productId: 'p1', name: 'Premium White Linen Shirt', brand: 'MANGO MAN', price: 699000, quantity: 1 },
+            { productId: 'p2', name: 'Essential Black Bomber Jacket', brand: 'H&M', price: 799000, quantity: 1 }
+        ],
+        history: [
+            { step: 1, status: 'Pesanan diterima', location: 'Gudang LUXE.M', time: '2026-06-09T08:00:00Z' },
+            { step: 2, status: 'Diproses', location: 'Pusat Pemenuhan', time: '2026-06-09T08:05:00Z' }
+        ],
+        statusTimeline: [
+            { step: 1, status: 'Pesanan diterima', location: 'Gudang LUXE.M' },
+            { step: 2, status: 'Diproses', location: 'Pusat Pemenuhan' },
+            { step: 3, status: 'Dikirim', location: 'Kurir LUXE.M' },
+            { step: 4, status: 'Sampai Tujuan', location: 'Alamat Pembeli' }
+        ]
+    }
+];
+
 var DEFAULT_ADMIN_PRODUCTS = {
     pria: [
         { id: 'p1', name: 'Premium White Linen Shirt',         brand: 'MANGO MAN',           price: 699000,  img: 'men_shirt_product_1780400575906.png',    cat: 'apparel' },
@@ -77,11 +117,13 @@ function getFlattenedProducts() {
 
 function loadOrderHistory() {
     var raw = localStorage.getItem(ORDER_HISTORY_KEY);
-    if (!raw) return [];
+    if (!raw) {
+        return JSON.parse(JSON.stringify(DEFAULT_ORDER_HISTORY));
+    }
     try {
         return JSON.parse(raw);
     } catch (e) {
-        return [];
+        return JSON.parse(JSON.stringify(DEFAULT_ORDER_HISTORY));
     }
 }
 
@@ -89,8 +131,129 @@ function saveOrderHistory(history) {
     localStorage.setItem(ORDER_HISTORY_KEY, JSON.stringify(history));
 }
 
+function getUniqueCustomers(orders) {
+    var customers = [];
+    orders.forEach(function(order) {
+        var existing = customers.find(function(item) {
+            return item.email === order.customer.email;
+        });
+        if (!existing) {
+            customers.push({
+                name: order.customer.firstName + ' ' + order.customer.lastName,
+                email: order.customer.email,
+                phone: order.customer.phone,
+                city: order.customer.city,
+                orders: 1
+            });
+        } else {
+            existing.orders += 1;
+        }
+    });
+    return customers;
+}
+
+function getTotalRevenue(orders) {
+    return orders.reduce(function(sum, order) {
+        return sum + (order.total || 0);
+    }, 0);
+}
+
+function getCompletedOrders(orders) {
+    return orders.filter(function(order) {
+        return order.statusIndex >= order.statusTimeline.length - 1;
+    }).length;
+}
+
 function getOrderStatus(order) {
     return order.statusTimeline[order.statusIndex] ? order.statusTimeline[order.statusIndex].status : 'Selesai';
+}
+
+function getLastOrderDate(order) {
+    return new Date(order.lastUpdated).toLocaleDateString('id-ID', { day: '2-digit', month: 'short', year: 'numeric' });
+}
+
+function renderCustomerTable() {
+    var query = el('admin-customer-search').value.trim().toLowerCase();
+    var orders = loadOrderHistory();
+    var customers = getUniqueCustomers(orders);
+    var rows = '';
+
+    customers.forEach(function(customer) {
+        var matches = query === '' || customer.name.toLowerCase().includes(query) || customer.email.toLowerCase().includes(query) || customer.city.toLowerCase().includes(query);
+        if (!matches) return;
+
+        rows += '<tr>'
+            + '<td>' + customer.name + '</td>'
+            + '<td>' + customer.email + '</td>'
+            + '<td>' + customer.phone + '</td>'
+            + '<td>' + customer.city + '</td>'
+            + '<td>' + customer.orders + '</td>'
+            + '</tr>';
+    });
+
+    if (rows === '') {
+        rows = '<tr><td colspan="5" style="text-align:center;padding:2rem;color:#888;">Tidak ada data pembeli yang cocok.</td></tr>';
+    }
+    el('admin-customer-table').innerHTML = rows;
+}
+
+function renderHistoryTable() {
+    var orders = loadOrderHistory();
+    var rows = '';
+
+    if (orders.length === 0) {
+        el('admin-history-table').innerHTML = '<tr><td colspan="5" style="text-align:center;padding:2rem;color:#888;">Belum ada riwayat pembelian.</td></tr>';
+        return;
+    }
+
+    orders.slice().sort(function(a, b) {
+        return new Date(b.lastUpdated) - new Date(a.lastUpdated);
+    }).forEach(function(order) {
+        rows += '<tr>'
+            + '<td>' + order.id + '</td>'
+            + '<td>' + order.customer.firstName + ' ' + order.customer.lastName + '</td>'
+            + '<td>' + getLastOrderDate(order) + '</td>'
+            + '<td>Rp ' + (order.total || 0).toLocaleString('id-ID') + '</td>'
+            + '<td>' + getOrderStatus(order) + '</td>'
+            + '</tr>';
+    });
+
+    el('admin-history-table').innerHTML = rows;
+}
+
+function showAdminView() {
+    el('admin-login-modal').classList.remove('active');
+    el('admin-dashboard').hidden = false;
+    renderAdminStats();
+    renderAdminOrderTable();
+    renderAdminTable();
+    renderCustomerTable();
+    renderHistoryTable();
+}
+
+function lockAdminView() {
+    localStorage.removeItem(ADMIN_AUTH_KEY);
+    el('admin-dashboard').hidden = true;
+    el('admin-login-modal').classList.add('active');
+}
+
+function authenticateAdmin(password) {
+    if (password === ADMIN_PASSWORD) {
+        localStorage.setItem(ADMIN_AUTH_KEY, 'true');
+        showAdminView();
+        showToast('Login berhasil. Selamat datang, admin!', 'success');
+        return true;
+    }
+    showToast('Password salah. Coba lagi.', 'error');
+    return false;
+}
+
+function ensureAdminAccess() {
+    if (localStorage.getItem(ADMIN_AUTH_KEY) === 'true') {
+        showAdminView();
+    } else {
+        lockAdminView();
+    }
 }
 
 function updateOrderProgress() {
@@ -120,6 +283,9 @@ function renderAdminStats() {
     el('admin-total-products').textContent = products.length;
     el('admin-total-categories').textContent = Object.keys(adminProducts).length;
     el('admin-total-orders').textContent = orders.length;
+    el('admin-total-customers').textContent = getUniqueCustomers(orders).length;
+    el('admin-total-revenue').textContent = 'Rp ' + getTotalRevenue(orders).toLocaleString('id-ID');
+    el('admin-completed-orders').textContent = getCompletedOrders(orders);
 }
 
 function renderAdminTable() {
@@ -209,7 +375,24 @@ function bindAdminEvents() {
     el('admin-refresh-orders').addEventListener('click', function() {
         renderAdminOrderTable();
         renderAdminStats();
+        renderCustomerTable();
+        renderHistoryTable();
         showToast('Status pesanan diperbarui.', 'success');
+    });
+    el('admin-customer-search').addEventListener('input', renderCustomerTable);
+    el('admin-refresh-customers').addEventListener('click', function() {
+        renderCustomerTable();
+        renderAdminStats();
+        showToast('Data pembeli diperbarui.', 'success');
+    });
+    el('admin-logout').addEventListener('click', function() {
+        lockAdminView();
+        showToast('Anda telah logout.', 'success');
+    });
+    el('admin-login-form').addEventListener('submit', function(event) {
+        event.preventDefault();
+        authenticateAdmin(el('admin-pass').value.trim());
+        el('admin-pass').value = '';
     });
 }
 
@@ -274,8 +457,6 @@ function showToast(message, type) {
 window.deleteAdminProduct = deleteAdminProduct;
 
 document.addEventListener('DOMContentLoaded', function() {
-    renderAdminStats();
-    renderAdminOrderTable();
-    renderAdminTable();
+    ensureAdminAccess();
     bindAdminEvents();
 });
